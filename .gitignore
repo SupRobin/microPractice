@@ -31,3 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
+.mvn
+mvnw
+mvnw.cmd
+demo.log
+
+
+### auth ###
+auth/target
+auth/compose.yaml
+auth/src/main/resources/application.properties
