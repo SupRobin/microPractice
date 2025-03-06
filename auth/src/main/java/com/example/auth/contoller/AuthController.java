@@ -1,13 +1,12 @@
 package com.example.auth.contoller;
 
+import com.example.auth.dto.RegisterRequest;
 import com.example.auth.model.User;
 import com.example.auth.repository.UserRepository;
-import org.apache.tomcat.util.buf.UEncoder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,18 +20,28 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
 
+    //Todo: need to implement
     @PostMapping("/logout")
-    public String logout() {
-        return "logout";
+    ResponseEntity<?> logout() {
+        return ResponseEntity.ok(null);
     }
 
     @PostMapping("/register")
-    public String register(String username, String password) {
-        return "register";
+    ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        try {
+            Optional<User> user = userRepository.findByEmail(request.getEmail());
+            if (user.isPresent()) return ResponseEntity.badRequest().build();
+
+            userRepository.save(user.get());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
+    //Todo: need to implement this
     @PostMapping("/profile/{id}")
-    public String getProfile(@PathVariable Long id) {
-        return "profile";
+    ResponseEntity<?> getProfile(@PathVariable Long id) {
+        return ResponseEntity.ok(userRepository.findById(id).orElseThrow());
     }
 }
