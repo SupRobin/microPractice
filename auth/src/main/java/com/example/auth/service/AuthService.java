@@ -3,7 +3,6 @@ package com.example.auth.service;
 import com.example.auth.dto.RegisterRequest;
 import com.example.auth.model.User;
 import com.example.auth.repository.UserRepository;
-import com.nimbusds.oauth2.sdk.TokenResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +10,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-    private final OAuthClient oAuthClient;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    AuthService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, OAuthClient oAuthClient) {
+    AuthService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.oAuthClient = oAuthClient;
     }
 
     public User register(RegisterRequest request) {
@@ -34,8 +31,8 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public TokenResponse login(String token) throws Exception {
-        return oAuthClient.validateToken(token);
+    public String login(String token) throws Exception {
+        return "logged in";
     }
 
     public void getProfile(User item){
@@ -43,6 +40,6 @@ public class AuthService {
     }
 
     public void logout() throws Exception {
-        oAuthClient.revokeToken("token");
+
     }
 }

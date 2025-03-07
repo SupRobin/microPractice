@@ -9,37 +9,44 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
-@Table
+@Table(name = "users")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long userId;
+    private Long userId;
 
     @NotBlank(message = "first name cannot be blank")
     @Column(nullable = false)
-    String firstName;
+    private String firstName;
 
     @NotBlank(message = "last name cannot be blank")
     @Column(nullable = false)
-    String lastName;
+    private String lastName;
 
     @NotBlank(message = "email is mandatory")
     @Email(message = "Email should be valid")
     @Column(nullable = false, unique = true)
-    String email;
+    private String email;
 
     @NotBlank(message = "username is mandatory")
     @Column(nullable = false, unique = true)
-    String username;
+    private String username;
 
     @NotBlank(message = "password is mandatory")
     @Column(nullable = false)
-    String password;
+    private String password;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    Set<Role> roles;
 
 
 }
